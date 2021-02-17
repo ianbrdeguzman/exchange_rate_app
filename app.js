@@ -1,5 +1,4 @@
 // assign HTML DOM elements
-const toInput = document.querySelector('#to-input');
 const fromInput = document.querySelector('#from-input');
 const fromCurrency = document.querySelector('.select-from');
 const toCurrency = document.querySelector('.select-to');
@@ -13,6 +12,33 @@ const createDate = () => {
     date.innerHTML = d.toDateString().slice(4);
 };
 
+// create selection
+const createSelection = async () => {
+
+    // API from Fixer.io
+    const API_SYM = `http://data.fixer.io/api/symbols?access_key=3b7da233aeac402f6980afe8717d96a9`
+
+    // fetch API
+    const response = await fetch(API_SYM);
+
+    // conver response to json
+    const data = await response.json();
+    
+    // loop over all the key in data
+    for (let key in data.symbols) {
+
+        // create new option HTML element
+        const option = 
+        `
+        <option value="${key}">${key}</option>
+        `
+
+        // insert option to select HTML element
+        fromCurrency.insertAdjacentHTML('beforeend', option);
+        toCurrency.insertAdjacentHTML('beforeend', option);
+    }
+}
+
 // fetch latest exchange rate
 const getRate = async () => {
     const EXR_API_KEY = '75cdb4fcb904766e08896f48';
@@ -25,7 +51,11 @@ const getRate = async () => {
     calculate(data);
 };
 
+// calculate exchange rate
 const calculate = (data) => {
+
+    // get HTML DOM element
+    const toInput = document.querySelector('#to-input');
     
     // get current rate
     const rate = data.conversion_rates[toCurrency.value];
@@ -37,6 +67,7 @@ const calculate = (data) => {
     showRate(rate);
 };
 
+// show exchange rate
 const showRate = (rate) => {
     
     // get HTML DOM element
@@ -55,6 +86,7 @@ const showRate = (rate) => {
     rateContainer.innerHTML = item;
 };
 
+// swap currency
 const exchange = () => {
     // assign input fromCurrency value to temp container
     const tempContainer = fromCurrency.value;
@@ -80,6 +112,9 @@ exchangeBtn.addEventListener('click', exchange);
 
 // call createDate
 createDate();
+
+// create options
+createSelection();
 
 // call getRate
 getRate();

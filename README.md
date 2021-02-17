@@ -5,3 +5,4 @@ Check it out [here!](https://ianbrdeguzman.github.io/exchange_rate_app/)
 * CSS3
 * JavaScript
 * ExchangeRate-API
+* Fixer.io API
